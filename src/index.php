@@ -42,14 +42,13 @@ HTML;
 
 try {
     $import = new ImportXls('mysql','localhost',3306,'root','root');
-    
-    
-    $import->question('CREATE DATABASE africanbikers');
-    
-        
+       
+    $import->question('CREATE DATABASE IF NOT EXISTS africanbikers');
+    $import->save();
+            
     echo "Database created successfully<br>";
   } catch(PDOException $e) {
-    echo $sql . "<br>" . $e->getMessage();
+    echo  "<br>" . $e->getMessage();
   }
   
   $conn = null;

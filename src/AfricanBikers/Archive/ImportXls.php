@@ -13,6 +13,7 @@ class ImportXls extends PDO{
     private $user = '';
     private $pass = '';
     private $link = NULL;
+    private $query = NULL;
 
     function __construct($driver,$host,$port,$user,$pass){
 
@@ -21,6 +22,7 @@ class ImportXls extends PDO{
         $this->port = $port;
         $this->user = $user;
         $this->pass = $pass;
+
         
     }
 
@@ -32,11 +34,29 @@ class ImportXls extends PDO{
     }
 
     public function question($query){
+        $this->$query = $query;
 
-        $this   ->connect()
-                ->exec($query);
+        return $this->connect()
+                    ->prepare($query)
+                    ->execute();
+                                     
 
     }
+
+    public function save(){
+
+                                
+
+    }
+
+    public function all(){
+
+        $this->connect()
+            ->prepare("SELECT *;")
+            ->execute();           
+
+    }
+
     
 
 
