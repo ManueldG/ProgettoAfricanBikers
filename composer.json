@@ -1,0 +1,21 @@
+{
+    "name": "manuel-della-gala/progetto-african-bikers",
+    "description": "progetto per automatizzare procedure amministrative",
+    "type": "project",
+    "autoload": {
+        "psr-4": {
+            "ManuelDellaGala\\ProgettoAfricanBikers\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "manuel dellagala",
+            "email": "manuel.dellagala@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {
+        "phpoffice/phpspreadsheet": "^1.0@beta",
+        "tecnickcom/tcpdf": "dev-main"
+    }
+}
