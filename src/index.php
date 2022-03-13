@@ -1,6 +1,9 @@
 <?php 
 
 require './../vendor/autoload.php';
+require './AfricanBikers/Archive/ImportXls.php';
+
+use AfricanBikers\Archive\ImportXls;
 
 use PhpOffice\PhpSpreadsheet\IOFactory as IOFactory;
 
@@ -29,15 +32,33 @@ $html = <<<HTML
     Importo: $cellValue[2]
 </div>
 
-<div>
+<div> 
    
 </div>
     
 
 HTML;
 
-include './AfricanBikers/Pdf/Config.php';
 
+try {
+    $import = new ImportXls('mysql','localhost',3306,'root','root');
+    
+    
+    $import->question('CREATE DATABASE africanbikers');
+    
+        
+    echo "Database created successfully<br>";
+  } catch(PDOException $e) {
+    echo $sql . "<br>" . $e->getMessage();
+  }
+  
+  $conn = null;
+
+
+
+
+
+include './AfricanBikers/Pdf/Config.php';
 
 
 
