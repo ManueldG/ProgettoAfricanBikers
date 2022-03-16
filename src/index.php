@@ -3,10 +3,18 @@
 require './../vendor/autoload.php';
 require './AfricanBikers/Archive/ImportXls.php';
 
+use Exception;
+
+use PHPMailer\PHPMailer\OAuth;
+
+use PHPMailer\PHPMailer\PHPMailer;
 use AfricanBikers\Archive\ImportXls;
+use PHPMailer\PHPMailer\SMTP as SMTP;
 
+
+use League\OAuth2\Client\Provider\Google;
+//Alias the League Google OAuth2 provider class
 use PhpOffice\PhpSpreadsheet\IOFactory as IOFactory;
-
 
 error_reporting(E_ALL);
 $xls = ($_FILES["file"]["tmp_name"]);
@@ -92,48 +100,118 @@ try {
 
 //include './AfricanBikers/Pdf/Config.php';
 
-error_reporting(E_ALL); // Genera un boundary 
+/**
+ * This example shows how to send via Google's Gmail servers using XOAUTH2 authentication
+ * using the league/oauth2-client to provide the OAuth2 token.
+ * To use a different OAuth2 library create a wrapper class that implements OAuthTokenProvider and
+ * pass that wrapper class to PHPMailer::setOAuth().
+ */
 
-var_dump($success = mail('manuel.dellagala@gmail.com', 'My Subject', "test"));
-
-$mail_boundary = "=_NextPart_" . md5(uniqid(time())); 
-$to = "manueldg@tiscali.it"; 
-$subject = "Testing e-mail"; 
-$sender = "manuel.dellagala@gmail.com"; 
-
-
-$headers = "From: $sender\n"; 
-$headers .= "MIME-Version: 1.0\n"; 
-$headers .= "Content-Type: multipart/alternative;\n\tboundary=\"$mail_boundary\"\n";
-$headers .= "X-Mailer: PHP " . phpversion(); // Corpi del messaggio nei due formati testo e HTML 
-
-$text_msg = "$name $surname $import $desc"; 
-$html_msg = "<b>messaggio</b> in formato <p><a href='http://www.aruba.it'>html</a><br><img src=\"http://hosting.aruba.it/image_top/top_01.gif\" border=\"0\">$name $surname $import $desc</p>";
-  // Costruisci il corpo del messaggio da inviare 
-  $msg = "This is a multi-part message in MIME format.\n\n"; 
-  $msg .= "--$mail_boundary\n"; 
-  $msg .= "Content-Type: text/plain; charset=\"iso-8859-1\"\n"; 
-  $msg .= "Content-Transfer-Encoding: 8bit\n\n"; 
-  $msg .= "Questa è una e-Mail di test inviata dal servizio Hosting di Aruba.it per la verifica del corretto funzionamento di PHP mail()function. Aruba.it";
-   // aggiungi il messaggio in formato text 
-   $msg .= "\n--$mail_boundary\n"; 
-   $msg .= "Content-Type: text/html; charset=\"iso-8859-1\"\n"; 
-   $msg .= "Content-Transfer-Encoding: 8bit\n\n"; 
-   $msg .= "Questa è una e-Mail di test inviata dal servizio Hosting di Aruba.it per la verifica del corretto funzionamento di PHP mail()function. Aruba.it";
-    // aggiungi il messaggio in formato HTML 
-    // Boundary di terminazione multipart/alternative 
-    $msg .= "\n--$mail_boundary--\n"; 
-    // Imposta il Return-Path (funziona solo su hosting Windows) 
-    ini_set("sendmail_from", $sender); 
-    // Invia il messaggio, il quinto parametro "-f$sender" imposta il Return-Path su hosting Linux 
-    if (mail($to, $subject, $msg, $headers, "-f$sender")) { 
-      echo "Mail inviata correttamente!<br><br>Questo di seguito è il codice sorgente usato per l'invio della mail:<br><br>"; 
-      highlight_file($_SERVER["SCRIPT_FILENAME"]); 
-      unlink($_SERVER["SCRIPT_FILENAME"]); 
-    } 
-    else { 
-      echo "<br><br>Recapito e-Mail fallito!"; 
-    } 
+//Import PHPMailer classes into the global namespace
 
 
+//SMTP needs accurate times, and the PHP time zone MUST be set
+//This should be done in your php.ini, but this is how to do it if you don't have access to that
+date_default_timezone_set('Etc/UTC');
 
+
+//Create a new PHPMailer instance
+$mail = new PHPMailer();
+
+//Tell PHPMailer to use SMTP
+$mail->isSMTP();
+
+//Enable SMTP debugging
+//SMTP::DEBUG_OFF = off (for production use)
+//SMTP::DEBUG_CLIENT = client messages
+//SMTP::DEBUG_SERVER = client and server messages
+$mail->SMTPDebug = SMTP::DEBUG_SERVER;
+
+//Set the hostname of the mail server
+$mail->Host = 'smtp.gmail.com';
+
+//Set the SMTP port number:
+// - 465 for SMTP with implicit TLS, a.k.a. RFC8314 SMTPS or
+// - 587 for SMTP+STARTTLS
+$mail->Port = 465;
+
+//Set the encryption mechanism to use:
+// - SMTPS (implicit TLS on port 465) or
+// - STARTTLS (explicit TLS on port 587)
+$mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
+
+//Whether to use SMTP authentication
+$mail->SMTPAuth = true;
+
+//Set AuthType to use XOAUTH2
+$mail->AuthType = 'XOAUTH2';
+
+//Start Option 1: Use league/oauth2-client as OAuth2 token provider
+//Fill in authentication details here
+//Either the gmail account owner, or the user that gave consent
+$email = 'manuel.dellagala@gmail.com';
+$clientId = 'RANDOMCHARS-----duv1n2.apps.googleusercontent.com';
+$clientSecret = 'RANDOMCHARS-----lGyjPcRtvP';
+
+//Obtained by configuring and running get_oauth_token.php
+//after setting up an app in Google Developer Console.
+$refreshToken = 'RANDOMCHARS-----DWxgOvPT003r-yFUV49TQYag7_Aod7y0';
+
+//Create a new OAuth2 provider instance
+$provider = new Google(
+    [
+        'clientId' => $clientId,
+        'clientSecret' => $clientSecret,
+    ]
+);
+
+//Pass the OAuth provider instance to PHPMailer
+$mail->setOAuth(
+    new OAuth(
+        [
+            'provider' => $provider,
+            'clientId' => $clientId,
+            'clientSecret' => $clientSecret,
+            'refreshToken' => $refreshToken,
+            'userName' => $email,
+        ]
+    )
+);
+//End Option 1
+
+//Option 2: Another OAuth library as OAuth2 token provider
+//Set up the other oauth library as per its documentation
+//Then create the wrapper class that implementations OAuthTokenProvider
+ //$oauthTokenProvider = new MyOAuthTokenProvider(/* Email, ClientId, ClientSecret, etc. */);
+
+//Pass the implementation of OAuthTokenProvider to PHPMailer
+ //$mail->setOAuth($oauthTokenProvider);
+//End Option 2
+
+//Set who the message is to be sent from
+//For gmail, this generally needs to be the same as the user you logged in as
+$mail->setFrom($email, 'First Last');
+
+//Set who the message is to be sent to
+$mail->addAddress('manuel.dellagala@gmail.com', 'John Doe');
+
+//Set the subject line
+$mail->Subject = 'PHPMailer GMail XOAUTH2 SMTP test';
+
+//Read an HTML message body from an external file, convert referenced images to embedded,
+//convert HTML into a basic plain-text alternative body
+$mail->CharSet = PHPMailer::CHARSET_UTF8;
+$mail->msgHTML(file_get_contents('content.html'), __DIR__);
+
+//Replace the plain text body with one created manually
+$mail->AltBody = 'This is a plain-text message body';
+
+//Attach an image file
+ //$mail->addAttachment('images/phpmailer_mini.png');
+
+//send the message, check for errors
+if (!$mail->send()) {
+    echo 'Mailer Error: ' . $mail->ErrorInfo;
+} else {
+    echo 'Message sent!';
+}
