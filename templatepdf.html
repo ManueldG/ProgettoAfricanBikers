@@ -2,8 +2,17 @@
 <html lang="en">
 <head>
 <style>
+
+    *{
+        font-family:Arial, Helvetica, sans-serif;
+    }
+
+    body{
+        padding: 0 50px;
+    }
+
 	.logo img {
-		width: 80px;
+		width: 100px;
 		margin-left: 20px;
 	}
 
@@ -14,6 +23,9 @@
     }
 
     .text-header{
+        text-align: right;
+        letter-spacing: .5px;
+        line-height: 1.5em;
         font-size: 20px;
         font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
         margin-right: 20px;
@@ -25,7 +37,7 @@
     .blu{
         color: #365f91;
         font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
-        font-size: 20px;
+        font-size: 24px;
         font-weight: 600;
     }
     .intester{
@@ -37,6 +49,73 @@
         font-weight: 600;
     }
 
+    .description{
+        font-size: 15px;
+        margin: 0 20px;
+        font-weight: 600;
+    }
+
+    .cost{
+        text-align: center;
+        font-size: 28px;
+        font-weight: 600;
+    }
+
+    .userdata-table{
+        margin-left: 40px;
+        margin-top: 20px;
+        margin-bottom: 20px;
+    }
+    
+    .userdata{
+
+        display: flex;
+        flex-direction: row;        
+        
+        width: max-content;
+
+        margin-left: 40px;
+        padding-right: 20px;        
+        
+    }
+
+    .field{
+        margin: 0 20px;
+        border-right: gray solid 1px;
+        padding-right: 20px;
+        line-height: 30px;
+    }
+
+    .value{
+
+        line-height: 30px;
+        flex-basis: auto;
+
+    }
+
+    
+
+    .paydata>.field>div,.value>div {
+
+        margin: 0;
+        line-height: 30px;
+        border: gray solid 1px; 
+        padding: 0 25px;
+
+    }
+
+    .paydata>.field,.value {
+
+        margin:0;
+        padding-right: 0;
+
+    }
+
+    footer{
+        display: flex;
+        justify-content:space-between;
+    }
+
 </style>
 <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -44,7 +123,7 @@
 <title></title>
 </head>
 <body>
-	<header>
+	<header style="display:flex; flex-direction: row; justify-content: space-between;  ">
 		<div class="header">
 			<div class="logo" >
 				<img src="ANDREOZZI%20AGOSTINO%20-%20017_html_52278709.jpg" >
@@ -65,6 +144,100 @@
         <div class="recu">Ricevuta n.017/2022 del 28/01/2022</div>
         
     </div>
+
+    <div class="description">
+        L&rsquo;Associazione Friends And Bikers O.N.L.U.S., nella persona
+            del suo legale rappresentante dichiara di aver ricevuto quale
+            erogazione liberale per l&rsquo;anno fiscale 2022 la somma di
+    </div>
 	
+	<div class="cost">Euro 100,00&euro; (Cento/00)</div>
+
+    <div class="userdata-table">
+        <div>da:</div>
+        
+        <div class="userdata">
+            <div class="field">
+                <div>Nominativo</div>
+                <div>Indirizzo</div>
+                <div>Cap, Comune e Provincia</div>
+                <div>C.F. / P.I.</div>
+            </div>
+            <div class="value">
+                <div>ANDREOZZI AGOSTINO</div>
+                <div>Via Romaniello 93</div>
+                <div>81038 Trentola Ducenta (CE)</div>
+                <div>NDRGTN72B19A512U</div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="description">
+        a sostegno delle proprie attivit&agrave;
+        statutarie secondo le modalit&agrave; e le destinazioni d&rsquo;uso
+        riportate nella seguente tabella riepilogativa.
+    </div>
+
+    <hr>
+
+    <p>L’Associazione Friends and Bikers onlus è un ente non commerciale ed è iscritta all’Anagrafe delle Onlus (Organizzazione non lucrativa di utilità sociale) ai sensi del D.Lgs 460/97. Per le persone fisiche, l’erogazione liberale è detraibile al 30% fino a € 30.000 (art.83 comma 1 del D.Lgs. 117/2017) o in alternativa è deducibile nel limite del 10% del reddito complessivo dichiarato (art.83 comma 2 del D.Lgs. 117/2017). Per gli enti e le società, l’erogazione liberale è deducibile nel limite del 10% del reddito complessivo dichiarato (art.83 comma 2 del D.Lgs. 117/2017).</p>
+    
+	<p>Si rammenta che è condizione di deducibilità o detraibilità delle donazioni l’erogazione delle stesse tramite banca, posta o altro sistema tracciabile previsto dalle norme.</per>
+
+    <p>La nostra associazione emette la presente ricevuta che riporta gli estremi dei versamenti effettuati. Questo viene concepito come un servizio di garanzia fondamentale e necessario al fine di instaurare, con i propri donatori, un rapporto improntato alla correttezza e alla trasparenza.</p>
+
+    <p> Per usufruire delle detrazioni previste dalla legge relativamente alle erogazioni liberali è necessario però conservare la ricevuta postale o bancaria della donazione effettuata, sola certificazione avente valore legale in quanto dimostrante la tracciabilità del movimento; per la donazione tramite bonifico bancario, carta di credito, carta prepag ata, paypal o assegno è sufficiente una copia dell’estratto conto che certifichi l’avvenuta donazione).</p>
+    <hr>
+    <footer>
+        <div class="left">Friends & Bikers Onlus / Attestazione di erogazione liberale</div>
+        <div class="right">[1/2]</div>
+    </footer>
+    <!--fine pagina-->
+
+    <p>Tabella riepilogativa delle erogazioni ricevute:</p>
+
+    <div class="userdata-table">
+                
+        <div class="userdata paydata">
+            <div class="field">
+                <div>Data</div>
+                <div>Importo</div>
+                <div>Modalità</div>
+                <div>Destinazione</div>
+            </div>
+            <div class="value">
+                <div>25/3/2022</div>
+                <div>100</div>
+                <div>Bonifico</div>
+                <div>erogazione liberale per progetti umanitari #savewaterdrinkbeer</div>
+            </div>
+        </div>
+    </div>
+
+      
+        
+    
+    
+    
+    Francesco Maglione Presidente e Legale Rappresentante
+
+
+
+    La presente ricevuta è esente da imposta di bollo ex art.82 comma 5 del D.Lgs.117/2017
+    
+    
+    
+    INFORMATIVA SULLA PRIVACY AI SENSI DEL D.LGS 196/2003 ART. 13
+    
+    E DELL’ART.13 GDPR 679/16 “REGOLAMENTO EUROPEO SULLA PROTEZIONE DEI DATI PERSONALI”
+    
+    Le comunichiamo che il titolare del trattamento dei suoi dati personali è Francesco Maglione (Legale Rappresentante Friends and Bikers Onlus). I suoi dati verranno trattati con la massima riservatezza attraverso l’utilizzo di strumenti elettronici e cartacei e non potranno essere ceduti a terzi o utilizzati per finalità diverse da quelle istituzionali. In qualsiasi momento Lei potrà esercitare i suoi diritti ed in particolare in qualunque momento di: ottenere la conferma dell'esistenza o meno dei medesimi dati e di conoscerne il contenuto e l'origine, verificarne l'esattezza o chiederne l'integrazione o l'aggiornamento, oppure la rettificazione (art. 7 del d.lgs. n. 196/2003). Ai sensi del medesimo articolo si ha il diritto di chiedere la cancellazione, la trasformazione in forma anonima o il blocco dei dati trattati in violazione di legge, nonché di opporsi in ogni caso, per motivi legittimi, al loro trattamento.
+    
+    
+    Le richieste vanno rivolte a Friends and Bikers Onlus - Via Campegna 85 – 80124 Napoli.
+    
+    
+    
 </body>
 </html>

@@ -5,7 +5,9 @@
     "autoload": {
         "psr-4": {
             "ManuelDellaGala\\ProgettoAfricanBikers\\": "src/"
-        }
+        },
+        "classmap": ["./src/AfricanBikers/Numeri/","./src/AfricanBikers/Archive/","./src/AfricanBikers/Pdf"]
+
     },
     "authors": [
         {

@@ -1,74 +1,50 @@
-<?php namespace AfricanBikers\Pdf\Config;
+<?php namespace AfricanBikers\Pdf;
+
+use TCPDF;
 
 
 require_once './../vendor/tecnickcom/tcpdf/config/tcpdf_config.php';
-
 require_once './../vendor/tecnickcom/tcpdf/tcpdf.php';
 
-// create new PDF document
-$pdf = new \TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
+class Config extends TCPDF{
 
-// set document information
-$pdf->setCreator(PDF_CREATOR);
-$pdf->setAuthor('Nicola Asuni');
-$pdf->setTitle('TCPDF Example 001');
-$pdf->setSubject('TCPDF Tutorial');
-$pdf->setKeywords('TCPDF, PDF, example, test, guide');
+    function __construct($orientation, $unit, $format, $unicode, $encoding, $pdfa)
+    {
+        parent::__construct($orientation, $unit, $format, $unicode, $encoding, $pdfa);
+        // set document information
+    }
 
-// set default header data
-$pdf->setHeaderData(PDF_HEADER_LOGO, PDF_HEADER_LOGO_WIDTH, PDF_HEADER_TITLE.' 001', PDF_HEADER_STRING, array(0,64,255), array(0,64,128));
-$pdf->setFooterData(array(0,64,0), array(0,64,128));
+	public function Header() {
+		// Logo
+		$image_file = K_PATH_IMAGES.'logo.jpg';
+		$this->Image($image_file, 10, 10, 15, '', 'JPG', '', 'T', false, 300, '', false, false, 0, false, false, false);
+		// Set font
+		
+		// Title
+		$this->SetFont('cid0jp', 'B', 10);
+		$this->Cell(0, 10, "Friends and Bikers O.N.L.U.S. C.F.95213610637", 0, 2, 'R', 0, '', 0, false, 'A', 'T');
+		$this->SetFont('helvetica', '', 10);
+		$this->Cell(0, 10, "Via Campegna n.85 – 80124 Napoli", 0, 2, 'R', 0, '', 0, false, 'M', 'M');
+		$this->SetFont('helvetica', 'regularB', 10);
+		$this->Cell(0, 10, "www.friendsandbikers.org", 0, 2, 'R', 0, 'www.friendsandbikers.org', 0, false, 'M', 'M');
+		$this->writeHTMLCell(0, 0, 10, '', "<hr >", 0, 1, 0, true, 'C', false);
+		
+	}
 
-// set header and footer fonts
-$pdf->setHeaderFont(Array(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN));
-$pdf->setFooterFont(Array(PDF_FONT_NAME_DATA, '', PDF_FONT_SIZE_DATA));
+	public function Footer() {
+        // Position at 15 mm from bottom
+        $this->SetY(-15);
+        // Set font
+        $this->SetFont('helvetica', 'I', 8);
+        // Page number
+		$this->writeHTMLCell(0, 1, '', '', "<hr >", 0, 1, 0, true, 'L', false);
+		
+        $this->Cell(0, 10, 'Friends & Bikers Onlus / Attestazione di erogazione liberale', 0, false, 'L', 0, '', 0, false, 'T', 'M');
 
-// set default monospaced font
-$pdf->setDefaultMonospacedFont(PDF_FONT_MONOSPACED);
+        $this->Cell(0, 10, '['.$this->getAliasNumPage().'/'.$this->getAliasNbPages().']', 0, false, 'R', 0, '', 0, false, 'T', 'M');
+    }
 
-// set margins
-$pdf->setMargins(PDF_MARGIN_LEFT, PDF_MARGIN_TOP, PDF_MARGIN_RIGHT);
-$pdf->setHeaderMargin(PDF_MARGIN_HEADER);
-$pdf->setFooterMargin(PDF_MARGIN_FOOTER);
 
-// set auto page breaks
-$pdf->setAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
-
-// set image scale factor
-$pdf->setImageScale(PDF_IMAGE_SCALE_RATIO);
-
-// set some language-dependent strings (optional)
-if (@file_exists(dirname(__FILE__).'/lang/ita.php')) {
-	require_once(dirname(__FILE__).'/lang/ita.php');
-	$pdf->setLanguageArray($l);
 }
 
-// ---------------------------------------------------------
 
-// set default font subsetting mode
-$pdf->setFontSubsetting(true);
-
-// Set font
-// dejavusans is a UTF-8 Unicode font, if you only need to
-// print standard ASCII chars, you can use core fonts like
-// helvetica or times to reduce file size.
-$pdf->setFont('dejavusans', '', 14, '', true);
-
-// Add a page
-// This method has several options, check the source code documentation for more information.
-$pdf->AddPage();
-
-// set text shadow effect
-$pdf->setTextShadow(array('enabled'=>true, 'depth_w'=>0.2, 'depth_h'=>0.2, 'color'=>array(196,196,196), 'opacity'=>1, 'blend_mode'=>'Normal'));
-
-// Set some content to print
-
-
-// Print text using writeHTMLCell()
-$pdf->writeHTMLCell(0, 0, '', '', $html, 0, 1, 0, true, '', true);
-
-// ---------------------------------------------------------
-
-// Close and output PDF document
-// This method has several options, check the source code documentation for more information.
-$pdf->Output('example_001.pdf', 'I');
