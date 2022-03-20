@@ -105,12 +105,12 @@ $pdf->setFooterFont(Array(PDF_FONT_NAME_DATA, '', PDF_FONT_SIZE_DATA));
 $pdf->setDefaultMonospacedFont(PDF_FONT_MONOSPACED);
 
 // set margins
-$pdf->setMargins(PDF_MARGIN_LEFT, PDF_MARGIN_TOP, PDF_MARGIN_RIGHT);
-$pdf->setHeaderMargin(PDF_MARGIN_HEADER);
-$pdf->setFooterMargin(PDF_MARGIN_FOOTER);
+$pdf->setMargins(PDF_MARGIN_LEFT, 32, PDF_MARGIN_RIGHT);
+$pdf->setHeaderMargin(50);
+$pdf->setFooterMargin(70);
 
 // set auto page breaks
-$pdf->setAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
+$pdf->setAutoPageBreak(TRUE, 30);
 
 // set image scale factor
 $pdf->setImageScale(PDF_IMAGE_SCALE_RATIO);
