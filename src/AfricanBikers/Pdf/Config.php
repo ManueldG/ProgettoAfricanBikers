@@ -29,7 +29,7 @@ class Config extends TCPDF{
 		$this->Cell(0, 10, "Via Campegna n.85 – 80124 Napoli", 0, 2, 'R', 0, '', 0, false, 'M', 'M');
 		$this->SetFont('helvetica', 'regularB', 10);
 		$this->Cell(0, 10, "www.friendsandbikers.org", 0, 2, 'R', 0, 'www.friendsandbikers.org', 0, false, 'M', 'M');
-		$this->writeHTMLCell(0, 0, 10, '', "<hr >", 0, 1, 0, true, 'C', false);
+		$this->writeHTMLCell(0, 0, 10, '', "<hr>", 0, 1, 0, true, 'C', false);
 		
 	}
 
@@ -115,6 +115,7 @@ class Config extends TCPDF{
 			font-size: 24px;
 			font-weight: 600;
 		}
+
 		.intester{
 			display: flex;
 			flex-direction: row;
@@ -155,37 +156,23 @@ class Config extends TCPDF{
 		}
 
 		.field{
-			margin: 0 20px;
 			
-			padding-right: 20px;
-			line-height: 30px;
+			border-right: 1px solid black;		
+			
 		}
 
 		.value{
 
-			line-height: 30px;
-			flex-basis: auto;
+			margin-left: 20px;
+			padding-left: 20px;				
 
 		}
 
 		
 
-		.paydata>.field>div,.value>div {
+		
 
-			margin: 0;
-			line-height: 30px;
-			
-			padding: 0 25px;
-
-		}
-
-		.paydata>.field,.value {
-
-			margin:0;
-			padding-right: 0;
-
-		}
-
+		
 		footer{
 			display: flex;
 			justify-content:space-between;
@@ -219,20 +206,20 @@ class Config extends TCPDF{
 				
 				<table>
 			<tr>
-				<td>Nominativo</td>
-				<td>$cellValue[1]</td>
+				<td class="field">Nominativo</td>
+				<td class="value">$cellValue[1]</td>
 			</tr>
 			<tr>
-				<td>Indirizzo</td>
-				<td>$address</td>
+				<td class="field">Indirizzo</td>
+				<td class="value">$address</td>
 			</tr>
 			<tr>
-				<td>Cap, Comune e Provincia</td>
-				<td>$city</td>
+				<td class="field">Cap, Comune e Provincia</td>
+				<td class="value">$city</td>
 			</tr>
 			<tr>
-				<td>C.F. / P.I.</td>
-				<td>$CF</td>
+				<td class="field">C.F. / P.I.</td>
+				<td class="value">$CF</td>
 			</tr>
 			
 			</table>
