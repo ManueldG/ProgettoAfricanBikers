@@ -8,16 +8,9 @@ use PDO;
  * ImportXls
  * @author Manuel della Gala
  * 
+ * 
  */
 class ImportXls extends PDO {
-
-    // TODO mettere in config
-    private $driver = 'mysql';
-    private $host = 'localhost';
-    private $port = '3306';
-    private $user = 'root';
-    private $pass = 'root';
-    // TODO end
 
     private $link = NULL;
     private $query = '';
@@ -27,23 +20,31 @@ class ImportXls extends PDO {
     /**
      * __construct
      *
-     * @param  string $driver
-     * @param  string $host
-     * @param  int $port
-     * @param  string $user
-     * @param  string $pass
+     * @param  string $file configutation file
+     *
      * @return void
      */
-    function __construct(){
-
-        $conn = new PDO("$this->driver:$this->host;port=$this->port",$this->user,$this->pass);
-        $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        $this->conn = $conn;
+    function __construct($file = 'my_setting.ini'){
+        
+        if (!$settings = parse_ini_file($file, TRUE)) 
+            throw new exception('Unable to open ' . $file . '.');
+       
+        $dns = $settings['database']['driver'] .
+        ':host=' . $settings['database']['host'] .
+        ((!empty($settings['database']['port'])) ? (';port=' . $settings['database']['port']) : '') .
+        ';dbname=' . $settings['database']['schema'];
+       
+        parent::__construct($dns, $settings['database']['username'], $settings['database']['password']);   
                 
     }
 
+    /**
+     * @param string $table
+     * @param array $data
+     * @return void
+     */
     
-    public function createTable(string $table,$data){
+    public function createTable(string $table, array $data):void{
         $sql = "CREATE TABLE IF NOT EXISTS $table(
             id BIGINT NOT NULL AUTO_INCREMENT ,";
 
@@ -64,14 +65,18 @@ class ImportXls extends PDO {
             
     }
 
-    public function question($query){
+
+    /**
+     * @param string $query 
+     * @return obj $conn
+     */
+    public function question(string $query):obj{
 
         $this->conn->query($query); 
 
         //$this->query ='';
 
-        return $this->conn;
-                                     
+        return $this->conn;                                     
 
     }
 
@@ -111,14 +116,6 @@ class ImportXls extends PDO {
             ->execute();           
 
     }
-
-    
-
-
-
-
-
-
 
 }
 

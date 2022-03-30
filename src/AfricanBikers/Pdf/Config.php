@@ -1,13 +1,23 @@
 <?php namespace AfricanBikers\Pdf;
 
 use TCPDF;
+
 use AfricanBikers\Numeri\Num2Words;
+
 use PhpOffice\PhpSpreadsheet\Shared\Date;
+
+
 
 
 require_once './../vendor/tecnickcom/tcpdf/config/tcpdf_config.php';
 require_once './../vendor/tecnickcom/tcpdf/tcpdf.php';
 
+/**
+ * @author Manuel della Gala <manuel.dellagala@gmail.com>
+ * 
+ * 
+ * 
+ */
 class Config extends TCPDF{
 
     function __construct($orientation, $unit, $format, $unicode, $encoding, $pdfa)
@@ -55,7 +65,7 @@ class Config extends TCPDF{
 
 		$amount = $spreadsheet->getActiveSheet()->getCell('S'.$_POST["riga"])->getCalculatedValue();  
 		$amountWords = Num2Words::spell_my_int($amount);
-		$float = (round($amount,2, PHP_ROUND_HALF_UP)-$amount)*100;
+		$float = (strlen((round($amount,2, PHP_ROUND_HALF_UP)-$amount)*100) == 1) ? ("0".(round($amount,2, PHP_ROUND_HALF_UP)-$amount)*100) : ((round($amount,2, PHP_ROUND_HALF_UP)-$amount)*100)   ;
 
 		$numberBill = $spreadsheet->getActiveSheet()->getCell('E'.$_POST["riga"])->getCalculatedValue();  
 
@@ -91,14 +101,8 @@ class Config extends TCPDF{
 
 			.logo img {
 				width: 100px;
-				margin-left: 20px;
 			}
 
-			.header {
-				display:flex;
-				flex-direction: row;
-				justify-content: space-between;
-			}
 
 			.text-header{
 				text-align: right;
@@ -108,6 +112,7 @@ class Config extends TCPDF{
 				font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
 				margin-right: 20px;
 			}
+
 			.line{
 				margin: 0 20px;
 			}
@@ -147,6 +152,14 @@ class Config extends TCPDF{
 				
 			}
 
+			.space{
+				
+				border-left: 1px solid black;	
+				width: 10px;				
+				
+			}
+
+
 			.value>span{
 				
 				margin: 0 20px;					
@@ -159,21 +172,22 @@ class Config extends TCPDF{
 
 			}
 
-			.signature>div{
-				text-align: right;
+			.clear-fix::after{
+				content:"";
+				clear:both;
+				display: table;
+
 			}
 
-			.sign{
-				text-align: right;
-			}
 
 			.table-donation{
 				margin: 200px auto;
 			}
-
 			
-
-			
+			.privacy{
+				margin: 40px auto;
+				font-size: 10px;
+			}
 
 			
 			footer{
@@ -214,20 +228,24 @@ class Config extends TCPDF{
 							<td class="field">
 								<span>Nominativo</span> 
 							</td>
+							<td class="space"></td>
 							<td class="value">
 								<span>$cellValue[1]</span>
 							</td>
 						</tr>
 						<tr>
 							<td class="field">Indirizzo</td>
+							<td class="space"></td>
 							<td class="value">$address</td>
 						</tr>
 						<tr>
 							<td class="field">Cap, Comune e Provincia</td>
+							<td class="space"></td>
 							<td class="value">$city</td>
 						</tr>
 						<tr>
 							<td class="field">C.F. / P.I.</td>
+							<td class="space"></td>
 							<td class="value">$CF</td>
 						</tr>
 						
@@ -259,7 +277,7 @@ class Config extends TCPDF{
 
 				
 				
-				<table >
+				<table>
 						<tr>
 							<th>
 								Data:
@@ -284,35 +302,48 @@ class Config extends TCPDF{
 							<td class="value">$cellValue[2]</td>
 						</tr>
 						
-						
-						
 					</table>
-				
-				
-				<div class="signature">
 
-					<div >Francesco Maglione</div> 
-					<div>Presidente e Legale Rappresentante</div>
-					<img class="sign" width="200px"  src="./img/sign.jpg">
+					<table>
+						<tr align="middle">
+							<td valign="middle" align="center">
+								<div></div>
+								<div></div>
+								
+								<img align="middle" class="img" width="100px"  src="./img/recycle.jpg">
+							</td>
+							<td valign="middle" align="center">
+								<div> </div>
+								<img class="img" width="100px"  src="./img/thanks.jpg">
+							</td>
+							<td valign="middle" align="center">
+								<div class="img">
+									<div></div>
+									<div >Francesco Maglione</div> 
+									<div>Presidente e Legale Rappresentante</div>
+									<img width="200px"  src="./img/sign.jpg">
+								</div>
+							</td>
+						</tr>
+					</table>
+
+					
+				<div class="privacy">La presente ricevuta è esente da imposta di bollo ex art.82 comma 5 del D.Lgs.117/2017
+				
+					<hr>
+					
+					<p>
+						INFORMATIVA SULLA PRIVACY AI SENSI DEL D.LGS 196/2003 ART. 13
+						
+						E DELL’ART.13 GDPR 679/16 “REGOLAMENTO EUROPEO SULLA PROTEZIONE DEI DATI PERSONALI”
+						
+						Le comunichiamo che il titolare del trattamento dei suoi dati personali è Francesco Maglione (Legale Rappresentante Friends and Bikers Onlus). I suoi dati verranno trattati con la massima riservatezza attraverso l’utilizzo di strumenti elettronici e cartacei e non potranno essere ceduti a terzi o utilizzati per finalità diverse da quelle istituzionali. In qualsiasi momento Lei potrà esercitare i suoi diritti ed in particolare in qualunque momento di: ottenere la conferma dell'esistenza o meno dei medesimi dati e di conoscerne il contenuto e l'origine, verificarne l'esattezza o chiederne l'integrazione o l'aggiornamento, oppure la rettificazione (art. 7 del d.lgs. n. 196/2003). Ai sensi del medesimo articolo si ha il diritto di chiedere la cancellazione, la trasformazione in forma anonima o il blocco dei dati trattati in violazione di legge, nonché di opporsi in ogni caso, per motivi legittimi, al loro trattamento.
+						
+						
+						Le richieste vanno rivolte a Friends and Bikers Onlus - Via Campegna 85 – 80124 Napoli.
+					<p>
 
 				</div>
-
-
-
-				<div>La presente ricevuta è esente da imposta di bollo ex art.82 comma 5 del D.Lgs.117/2017</div>
-				
-				<hr>
-				
-				<p>
-					INFORMATIVA SULLA PRIVACY AI SENSI DEL D.LGS 196/2003 ART. 13
-					
-					E DELL’ART.13 GDPR 679/16 “REGOLAMENTO EUROPEO SULLA PROTEZIONE DEI DATI PERSONALI”
-					
-					Le comunichiamo che il titolare del trattamento dei suoi dati personali è Francesco Maglione (Legale Rappresentante Friends and Bikers Onlus). I suoi dati verranno trattati con la massima riservatezza attraverso l’utilizzo di strumenti elettronici e cartacei e non potranno essere ceduti a terzi o utilizzati per finalità diverse da quelle istituzionali. In qualsiasi momento Lei potrà esercitare i suoi diritti ed in particolare in qualunque momento di: ottenere la conferma dell'esistenza o meno dei medesimi dati e di conoscerne il contenuto e l'origine, verificarne l'esattezza o chiederne l'integrazione o l'aggiornamento, oppure la rettificazione (art. 7 del d.lgs. n. 196/2003). Ai sensi del medesimo articolo si ha il diritto di chiedere la cancellazione, la trasformazione in forma anonima o il blocco dei dati trattati in violazione di legge, nonché di opporsi in ogni caso, per motivi legittimi, al loro trattamento.
-					
-					
-					Le richieste vanno rivolte a Friends and Bikers Onlus - Via Campegna 85 – 80124 Napoli.
-				<p>
 				
 				
 				

@@ -16,16 +16,16 @@
 	<div class="form">
 		<form method="POST" action="index.php" enctype="multipart/form-data">
 			
-			<div class="dsp form-group">
+			<div class="form-group form">
 
 				<label for="riga">Riga da esportare</label>
 				<input type="number" name="riga" id="riga">
 
-				<label>Upload Excel File</label>
+				<label>Seleziona il file Excel </label>
 				<input type="file" name="file" class="form-control">
 			</div>
-			<div class="dsp form-group">
-				<button type="submit" name="Submit" class="btn btn-success">Upload</button>
+			<div class="form-group form">
+				<button type="submit" name="Submit" class="btn btn-success">Genera ricevuta</button>
 			</div>
 		
 	</form>

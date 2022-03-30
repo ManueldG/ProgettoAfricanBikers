@@ -4,30 +4,28 @@ require './../vendor/autoload.php';
 //require './AfricanBikers/autoload.php';
  
 
-use Exception;
-
-
 use AfricanBikers\Pdf\Config;
 use AfricanBikers\Numeri\Num2Words;
 use AfricanBikers\Archive\ImportXls; 
 
-
 use PhpOffice\PhpSpreadsheet\Shared\Date;
 use PhpOffice\PhpSpreadsheet\IOFactory as IOFactory;
-
+use PhpOffice\PhpSpreadsheet\Reader\Exception;
 
 error_reporting(E_ALL);
-
 
 $xls = ($_FILES["file"]["tmp_name"]);
 
 $reader = IOFactory::createReader('Xls');
+
 $reader->setReadDataOnly(TRUE);
-$spreadsheet = $reader->load($xls);
 
-
-
-
+try {
+  /** Load $inputFileName to a Spreadsheet Object  **/
+  $spreadsheet = $reader->load($xls);
+} catch(Exception $e) {
+  echo('Error loading file: '.$e->getMessage());
+}
 
 /*
 $desc = $cellValue[3];
@@ -83,6 +81,7 @@ try {
   
   // TODO end
 //include './AfricanBikers/Pdf/Config.php';
+
 $pdf = new Config(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
 $html = Config::Body($spreadsheet);
 $pdf->setCreator(PDF_CREATOR);
@@ -143,11 +142,24 @@ $pdf->setTextShadow(array('enabled'=>true, 'depth_w'=>0.2, 'depth_h'=>0.2, 'colo
 
 
 // Print text using writeHTMLCell()
+
+
 $pdf->writeHTMLCell(0, 0, '', '', $html, 0, 1, 0, true, '', true);
+
 
 // ---------------------------------------------------------
 
 // Close and output PDF document
 // This method has several options, check the source code documentation for more information.
+try{
 
-$pdf->Output('example_001.pdf', 'I');
+  $pdf->Output('example_001.pdf', 'I');
+  throw new Exception("Errore!");
+
+}
+
+catch(Exception $e){
+
+  var_dump($e);
+
+}
