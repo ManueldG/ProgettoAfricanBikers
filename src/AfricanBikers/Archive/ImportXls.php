@@ -12,33 +12,81 @@ use PDOException;
  * 
  * 
  */
-class ImportXls extends PDO {
+class ImportXls {
 
-    private $link = NULL;
-    private $query = '';
-    public $conn = NULL;
+    protected $conn;
+
+    protected static $instance;
+
+    public static function getInstance(string $file){
+
+        if (!self::$instance)
+            self::$instance = new static($file);
+        return self::$instance;
+
+    }
+
+    protected function __construct(string $file){
+
+        if (!$settings = parse_ini_file($file, TRUE)) 
+            throw new PDOException('Unable to open ' . $file . '.');
+
+        $dns = $settings['database']['driver'] .
+        ':host=' . $settings['database']['host'] .
+        ((!empty($settings['database']['port'])) ? (';port=' . $settings['database']['port']) : '') .
+        ';dbname=' . $settings['database']['schema'];  
+        
+        $this->conn = new PDO($dns, $settings['database']['username'], $settings['database']['password']);
+
+    }
+
+    public function getConn(){
+
+        return $this->conn;
+
+    }
     
         
     /**
      * __construct
      *
-     * @param  string $file configutation file
+     * @param  string $file configration file
      *
      * @return void
      */
-     function __construct($file = 'settings.ini'){
-        
+
+/*
+     protected function __construct($dns, $username, $pass){       
+       
+        $this->link = new PDO($dns, $username, $pass);   
+         
+    }
+
+    public static function getInstance($dns, $username, $pass):object{
+
+        if (!self::$instance) {
+            self::$instance = new static($dns, $username, $pass);
+        } 
+
+         return self::$instance;
+
+    }
+
+    public static function getConn($file = 'settings.ini'):object{
+
         if (!$settings = parse_ini_file($file, TRUE)) 
             throw new PDOException('Unable to open ' . $file . '.');
        
         $dns = $settings['database']['driver'] .
         ':host=' . $settings['database']['host'] .
         ((!empty($settings['database']['port'])) ? (';port=' . $settings['database']['port']) : '') .
-        ';dbname=' . $settings['database']['schema'];
+        ';dbname=' . $settings['database']['schema'];        
        
-        parent::__construct($dns, $settings['database']['username'], $settings['database']['password']);   
-                
+        return self($dns,$settings['database']['username'],$settings['database']['password'])::$conn;
+       
     }
+
+*/
 
     /**
      * @param string $table
@@ -113,10 +161,29 @@ class ImportXls extends PDO {
 
     public function all(){
 
-        $this->conn
+        $this->link
             ->prepare("SELECT *;")
             ->execute();           
 
+    }
+
+    public static function show(int $id):void{
+
+        try{
+        self::getConn('settings.ini');
+        }
+        catch(PDOException $e){
+            var_dump($e);
+        }
+
+        $query = self::$conn->prepare("SELECT * FROM donatori WHERE id = :id");
+        var_dump($query);
+        $query->bindParam(':id',$id);
+        $query->execute();
+
+        $res = $query->fetchAll();
+
+        var_dump($res);
     }
 
 }

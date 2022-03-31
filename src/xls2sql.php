@@ -4,14 +4,25 @@ require './../vendor/autoload.php';
 
 use AfricanBikers\Archive\ImportXls;
 
-
-
 try {
-    $conn = new  ImportXls('./settings.ini');
+
+    $conn =  ImportXls::getInstance('./settings.ini');
+    
 } 
+
 catch (PDOException $th) {
+
     echo ('Error: '.$th->getMessage());
+
 }
+
+$link = $conn->getConn();
+
+$resp = $link->query('SELECT * FROM donatori');
+
+var_dump($resp->fetchAll());
+
+
 
 #index
 //foreach ($conn->query('SELECT * FROM `donatori`',PDO::FETCH_ASSOC) as $row) {
@@ -21,14 +32,6 @@ echo("\n");
 
 #show
 
-$id = 2;
-
-$query = $conn->prepare("SELECT * FROM donatori WHERE id = :id");
-$query->bindParam(':id',$id);
-$query->execute();
-
-$res = $query->fetchAll();
-
-var_dump($res);
+//ImportXls::show(1);
 
 
