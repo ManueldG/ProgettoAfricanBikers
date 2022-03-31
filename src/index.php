@@ -28,12 +28,7 @@ try {
 }
 
 /*
-$desc = $cellValue[3];
-$name = $cellValue[0];
-$surname = $cellValue[1];
-$import = $cellValue[2];
 
-//TODO mettere in setup
 
 try {
     $import = new ImportXls();

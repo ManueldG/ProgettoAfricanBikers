@@ -2,6 +2,8 @@
 
 
 use PDO;
+use PDOStatement;
+use PDOException;
 
 
 /**
@@ -24,10 +26,10 @@ class ImportXls extends PDO {
      *
      * @return void
      */
-    function __construct($file = 'my_setting.ini'){
+     function __construct($file = 'settings.ini'){
         
         if (!$settings = parse_ini_file($file, TRUE)) 
-            throw new exception('Unable to open ' . $file . '.');
+            throw new PDOException('Unable to open ' . $file . '.');
        
         $dns = $settings['database']['driver'] .
         ':host=' . $settings['database']['host'] .
@@ -70,7 +72,7 @@ class ImportXls extends PDO {
      * @param string $query 
      * @return obj $conn
      */
-    public function question(string $query):obj{
+    public function question(string $query):object{
 
         $this->conn->query($query); 
 
