@@ -20,6 +20,8 @@
         "phpoffice/phpspreadsheet": "^1.0@beta",
         "tecnickcom/tcpdf": "dev-main",
         "phpmailer/phpmailer": "dev-master",
-        "league/oauth2-google": "dev-main"
+        "league/oauth2-google": "dev-main",
+        "guzzlehttp/psr7": "2.2.x-dev",
+        "google/apiclient": "2.x-dev"
     }
 }

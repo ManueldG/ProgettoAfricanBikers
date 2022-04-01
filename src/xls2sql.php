@@ -16,22 +16,16 @@ catch (PDOException $th) {
 
 }
 
+#index
 $link = $conn->getConn();
 
 $resp = $link->query('SELECT * FROM donatori');
 
 var_dump($resp->fetchAll());
 
-
-
-#index
-//foreach ($conn->query('SELECT * FROM `donatori`',PDO::FETCH_ASSOC) as $row) {
-    //var_dump($row);
-//}
-echo("\n");
-
 #show
 
-//ImportXls::show(1);
+var_dump($conn->show(1));
+var_dump($conn->insert('donatori',array(1=>'Manuel','della Gala','200','donazione')));
 
 

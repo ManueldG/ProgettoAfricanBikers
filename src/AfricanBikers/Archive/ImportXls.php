@@ -1,23 +1,24 @@
 <?php namespace AfricanBikers\Archive;
 
-
 use PDO;
 use PDOStatement;
 use PDOException;
 
-
 /**
  * ImportXls
- * @author Manuel della Gala
- * 
+ * @author Manuel della Gala 
  * 
  */
 class ImportXls {
 
     protected $conn;
-
     protected static $instance;
 
+    /** 
+     * 
+     * @param string $file
+     * @return object $instance
+     */    
     public static function getInstance(string $file){
 
         if (!self::$instance)
@@ -40,6 +41,12 @@ class ImportXls {
 
     }
 
+
+
+    /**
+     * getConn() 
+     * @return $conn
+     */
     public function getConn(){
 
         return $this->conn;
@@ -47,47 +54,6 @@ class ImportXls {
     }
     
         
-    /**
-     * __construct
-     *
-     * @param  string $file configration file
-     *
-     * @return void
-     */
-
-/*
-     protected function __construct($dns, $username, $pass){       
-       
-        $this->link = new PDO($dns, $username, $pass);   
-         
-    }
-
-    public static function getInstance($dns, $username, $pass):object{
-
-        if (!self::$instance) {
-            self::$instance = new static($dns, $username, $pass);
-        } 
-
-         return self::$instance;
-
-    }
-
-    public static function getConn($file = 'settings.ini'):object{
-
-        if (!$settings = parse_ini_file($file, TRUE)) 
-            throw new PDOException('Unable to open ' . $file . '.');
-       
-        $dns = $settings['database']['driver'] .
-        ':host=' . $settings['database']['host'] .
-        ((!empty($settings['database']['port'])) ? (';port=' . $settings['database']['port']) : '') .
-        ';dbname=' . $settings['database']['schema'];        
-       
-        return self($dns,$settings['database']['username'],$settings['database']['password'])::$conn;
-       
-    }
-
-*/
-
     /**
      * @param string $table
      * @param array $data
@@ -116,45 +82,16 @@ class ImportXls {
     }
 
 
-    /**
-     * @param string $query 
-     * @return obj $conn
-     */
-    public function question(string $query):object{
-
-        $this->conn->query($query); 
-
-        //$this->query ='';
-
-        return $this->conn;                                     
-
-    }
-
-    public function where(String $argA, String $argB, String $comparison="="):object{
-        
-        $this->query.=" WHERE $argA $comparison $argB ";
-
-        return $this;                                     
-
-    }
-
     public function insert(string $table, array $arrData){
 
-        $sqlFirst = "INSERT INTO donatori(";
-        $sqlSecond = "VALUE(";
-        foreach($arrData as $key => $value){
+        $request = $this->conn->prepare('INSERT INTO $table VALUES (NULL, ?, ?, ?, ?)');
 
-            $sqlFirst .= " $key,";
-            $sqlSecond .= "'$value',";
-
+        foreach ($arrData as $key => $value) {  
+            $request->bindParam($key, $value);   
         }
 
-        $sqlFirst = substr($sqlFirst, 0, -1);  
-        $sqlSecond = substr($sqlSecond, 0, -1);      
-        
-        
-            echo ("* $sqlFirst) $sqlSecond);*");
-            $this->question(" $sqlFirst) $sqlSecond);");
+        $request->execute();
+
     }
 
 
@@ -167,23 +104,16 @@ class ImportXls {
 
     }
 
-    public static function show(int $id):void{
+    public function show(int $id):array{
 
-        try{
-        self::getConn('settings.ini');
-        }
-        catch(PDOException $e){
-            var_dump($e);
-        }
-
-        $query = self::$conn->prepare("SELECT * FROM donatori WHERE id = :id");
-        var_dump($query);
+        $query = $this->conn->prepare("SELECT * FROM donatori WHERE id = :id");
+        
         $query->bindParam(':id',$id);
         $query->execute();
 
         $res = $query->fetchAll();
 
-        var_dump($res);
+        return $res;
     }
 
 }
