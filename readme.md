@@ -10,9 +10,9 @@ aprire console windows:
 
     composer install
 
-    src/import.php: importa il file excel ed estrapola la riga selezionata e crea la ricevuta in pdf
+src/import.php: importa il file excel ed estrapola la riga selezionata e crea la ricevuta in pdf
 
-    src/xls2sql.php: (in attesa da terminare dopo le indicazioni della ONG) importa i dati del file excel del database
+src/xls2sql.php: (in attesa da terminare dopo le indicazioni della ONG) importa i dati del file excel del database
 
     creare il file src/settings.ini:
     [database]
@@ -24,11 +24,11 @@ aprire console windows:
     password = <password del server>
 
 
-    aaaaaaaa...
+aaaaaaaa...
 
-    #header
+#header
 
-    ...dsfasdfd
+...dsfasdfd
 
 
 
