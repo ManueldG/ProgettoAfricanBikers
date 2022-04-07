@@ -14,7 +14,7 @@
 	
     <h1>Importa foglio di calcolo</h1>
 	<div class="form">
-		<form method="POST" action="index.php" enctype="multipart/form-data">
+		<form method="POST" action="docPDF.php" enctype="multipart/form-data">
 			
 			<div class="form-group form">
 

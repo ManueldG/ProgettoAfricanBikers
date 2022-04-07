@@ -55,6 +55,7 @@ class ImportXls {
     
         
     /**
+     * createTable
      * @param string $table
      * @param array $data
      * @return void
@@ -81,21 +82,6 @@ class ImportXls {
             
     }
 
-
-    public function insert(string $table, array $arrData){
-
-        $request = $this->conn->prepare('INSERT INTO $table VALUES (NULL, ?, ?, ?, ?)');
-
-        foreach ($arrData as $key => $value) {  
-            $request->bindParam($key, $value);   
-        }
-
-        $request->execute();
-
-    }
-
-
-
     public function all(){
 
         $this->link
@@ -114,6 +100,74 @@ class ImportXls {
         $res = $query->fetchAll();
 
         return $res;
+    }
+
+
+    /**
+     * insert
+     * @param string $table table where insert data
+     * @param array $arrData value to insert
+     * @return bool true if successful, false if not
+     */
+    public function insert(string $table, array $arrData):bool{
+
+        $request = $this->conn->prepare("INSERT INTO $table (id, nome, cognome, importo, descrizione) VALUES (?, ?, ?, ?, ?)");
+        
+        foreach ($arrData as $key => &$value) {  
+            $request->bindParam( ($key+1), $value);   
+            echo (($key+1)." => ".$value."<br>");
+        }
+        
+
+        return $request->execute();
+    }
+
+    /**
+     * update
+     * @param string $table table where insert data
+     * @param array $arrData value to update
+     * @return bool true if successful, false if not
+     */
+    public function update(string $table, array $arrData, int $id):bool{
+        
+        #UPDATE `donatori` SET `nome` = 'Manuel' WHERE `donatori`.`id` = 1; 
+        //$request = $this->conn->prepare("UPDATE `$table` SET(id, nome, cognome, importo, descrizione) VALUES (NULL, , ?, ?, ?)");
+          
+        $sql = "UPDATE `$table` SET ";
+        $request = $this->conn->prepare($sql);    
+
+        foreach ($arrData as $key => &$value) {  
+            
+            $sql.= "`" . $key . "` = :" . $key;
+            
+        }
+
+        $sql.= " WHERE `id` = :id";
+
+        foreach ($arrData as $key => &$value) {  
+            
+            $request->bindParam( ":$key", $value,PDO::PARAM_STR); 
+        }        
+
+        $request->bindParam( ':id', $id,PDO::PARAM_INT); 
+        
+        return $request->execute();
+    }
+
+    /**
+     * delete 
+     * DELETE FROM `movies` WHERE `movie_id`  IN (20,21);
+     * @param int $id
+     * @return bool true if successful, false if not
+     */
+    public function delete(string $table, int $id):bool{
+
+        $sql = "DELETE FROM $table WHERE `id` = :id;";
+        $request = $this->conn->prepare($sql);
+        $request->bindParam(':id',$id);
+        
+        return $request->execute();
+        ;
     }
 
 }

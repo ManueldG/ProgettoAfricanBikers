@@ -26,7 +26,10 @@ class Config extends TCPDF{
         // set document information
     }
 
-	public function Header() {
+	/**
+	 * 
+	 */
+	public function Header():void {
 		// Logo
 		$image_file = K_PATH_IMAGES.'logo.jpg';
 		$this->Image($image_file, 10, 10, 15, '', 'JPG', '', 'T', false, 300, '', false, false, 0, false, false, false);
@@ -45,7 +48,7 @@ class Config extends TCPDF{
 		
 	}
 
-	public function Footer() {
+	public function Footer():void {
         // Position at 15 mm from bottom
         $this->SetY(-20);
         // Set font
@@ -58,7 +61,7 @@ class Config extends TCPDF{
         $this->Cell(0, 10, '['.$this->getAliasNumPage().'/'.$this->getAliasNbPages().']', 0, false, 'R', 0, '', 0, false, 'T', 'M');
     }
 
-	public static function Body($spreadsheet){
+	public static function Body(obj $spreadsheet):string{
 
 		for($i = 'B'; $i < 'U' ; $i++)      
       		$cellValue[] = $spreadsheet->getActiveSheet()->getCell($i.$_POST["riga"])->getCalculatedValue();

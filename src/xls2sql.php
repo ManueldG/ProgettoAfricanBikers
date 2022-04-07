@@ -20,12 +20,24 @@ catch (PDOException $th) {
 $link = $conn->getConn();
 
 $resp = $link->query('SELECT * FROM donatori');
+$resp->fetchAll();
 
-var_dump($resp->fetchAll());
 
 #show
+echo($conn->show(1));
 
-var_dump($conn->show(1));
-var_dump($conn->insert('donatori',array(1=>'Manuel','della Gala','200','donazione')));
+#insert
+try{
+    var_dump($conn->insert('donatori',array('Manuel','della Gala','200','test')));
+}
+catch(PDOException $e){
+    var_dump($e);
+}
+
+#update 
+$conn->update('donatori',array('nome'=>'Gigi'),1);
+
+#delete from
+#$conn->delete('donatori',8);
 
 
