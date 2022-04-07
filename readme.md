@@ -25,9 +25,9 @@ creare il file src/settings.ini:
     password = <password del server>
 
 
-Try to put a blank line before...
+
 
 # Heading
 
-...and after a heading.
+
 
