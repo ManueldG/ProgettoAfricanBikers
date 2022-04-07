@@ -1,4 +1,4 @@
-#Strumenti per automatizzare l'ufficio#
+# Strumenti per automatizzare l'ufficio 
 
 per importare il progetto serve git e composer installati
 
@@ -23,11 +23,4 @@ creare il file src/settings.ini:
     schema = <nome db>
     username = <username del server>
     password = <password del server>
-
-
-
-
-# Heading
-
-
 
